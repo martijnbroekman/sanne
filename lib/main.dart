@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+//import 'package:flutter/rendering.dart';
 
 import 'package:sanne/pages/dashboard_page.dart';
 import 'package:sanne/pages/scanning_page.dart';
 
-void main() => runApp(new MyApp());
+void main() {
+  //debugPaintSizeEnabled = true;
+  //debugPaintBaselinesEnabled = true;
+  //debugPaintPointersEnabled = true; // check for tapping
+  runApp(new MyApp());
+} 
 
 class MyApp extends StatefulWidget{
   @override

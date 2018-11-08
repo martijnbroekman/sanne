@@ -24,7 +24,10 @@ class Ingredient extends StatelessWidget {
           ),
           child: Text(
             count.toString(),
-            style: TextStyle(color: Colors.white, fontSize: 8.0),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 8.0,
+            ),
           ),
         ),
       );
