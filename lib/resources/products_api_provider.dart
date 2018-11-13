@@ -21,11 +21,11 @@ class ProductsApiProvider {
   Future<List<Product>> getProductsByKeyWord(String keyword) async {
     final response = await client.get('$_root/products/?search=$keyword');
     final parsedJson = json.decode(response.body);
-    print(parsedJson);
-    final products = <Product>[];
-    parsedJson.forEach((p) => products.add(Product.fromJson(p)));
     
-    return products;
+    final productPage = ProductPage.fromJson(parsedJson);
+    //parsedJson.forEach((p) => products.add(Product.fromJson(p)));
+    
+    return productPage.results;
   }
 
   Future<Product> getProduct(int id) async {

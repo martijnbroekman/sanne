@@ -28,15 +28,18 @@ class ProductsPage extends StatelessWidget {
       stream: bloc.foundProducts,
       builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
         if (!snapshot.hasData) {
-          return Text('Still loading');
+          return Align(
+            alignment: Alignment.topCenter,
+            child: CircularProgressIndicator(),
+          );
         }
 
         return ListView.builder(
           itemCount: snapshot.data.length,
           itemBuilder: (BuildContext context, int index) {
             final product = snapshot.data[index];
-            
-            return Ingredient(product.imageUrl, product.name);
+
+            return Ingredient(product);
           },
         );
       },

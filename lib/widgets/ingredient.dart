@@ -1,18 +1,34 @@
 import 'package:flutter/material.dart';
 
-class Ingredient extends StatelessWidget {
-  final String url;
-  final String text;
-  final int count;
-  final Function onAdd;
-  final Function onRemove;
+import '../models/product.dart';
 
-  Ingredient(this.url, this.text, {this.count, this.onAdd, this.onRemove});
+class Ingredient extends StatefulWidget {
+  final Product product;
+
+  Ingredient(this.product);
+
+  @override
+  State<StatefulWidget> createState() {
+    return IngredientState();
+  }
+}
+
+class IngredientState extends State<Ingredient> {
+  int count;
 
   List<Widget> _buildChildren() {
-    List<Widget> children = [Text(this.text)];
+    List<Widget> children = [
+      Expanded(
+        flex: 10,
+        child: Text(
+          widget.product.name,
+          style: TextStyle(fontSize: 15.0),
+          maxLines: 2,
+        ),
+      )
+    ];
 
-    if (count != null) {
+    if (count != null && count > 0) {
       children.add(
         Container(
           margin: EdgeInsets.only(left: 5.0),
@@ -38,24 +54,32 @@ class Ingredient extends StatelessWidget {
         child: SizedBox(),
       ),
     );
-
-    if (onAdd != null) {
+    if (count != null) {
       children.add(
         IconButton(
           icon: Icon(Icons.add_circle_outline),
           color: Colors.green,
-          onPressed: onAdd,
+          onPressed: () {
+            setState(() {
+              widget.product.count++;
+            });
+          },
         ),
       );
-    }
-    if (onRemove != null) {
-      children.add(
-        IconButton(
-          icon: Icon(Icons.remove_circle_outline),
-          color: Colors.red,
-          onPressed: onRemove,
-        ),
-      );
+
+      if (count > 0) {
+        children.add(
+          IconButton(
+            icon: Icon(Icons.remove_circle_outline),
+            color: Colors.red,
+            onPressed: () {
+              setState(() {
+                widget.product.count--;
+              });
+            },
+          ),
+        );
+      }
     }
 
     return children;
@@ -63,9 +87,11 @@ class Ingredient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    count = widget.product.count ?? 0;
+
     return ListTile(
       leading: Image.network(
-        url,
+        widget.product.imageUrl,
         height: 40.0,
       ),
       title: Row(

@@ -24,20 +24,7 @@ class ShoppingListPage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          Ingredient(
-            'https://static.ah.nl/image-optimization/static/product/AHI_434d50303131393337_5_LowRes_JPG.JPG?options=399,q80',
-            'Boerenkool',
-            count: 2,
-            onAdd: () {},
-            onRemove: () {},
-          ),
-          Ingredient(
-            'https://static.ah.nl/image-optimization/static/product/AHI_434d50303131393337_5_LowRes_JPG.JPG?options=399,q80',
-            'Boerenkool',
-            count: 2,
-            onAdd: () {},
-            onRemove: () {},
-          ),
+          
         ],
       ),
     );
