@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../models/product.dart';
+import '../blocs/products_provider.dart';
 
 class Ingredient extends StatefulWidget {
   final Product product;
+  final Function(Product) onProductChange;
 
-  Ingredient(this.product);
+  Ingredient({@required this.product, @required this.onProductChange});
 
   @override
   State<StatefulWidget> createState() {
@@ -16,13 +18,13 @@ class Ingredient extends StatefulWidget {
 class IngredientState extends State<Ingredient> {
   int count;
 
-  List<Widget> _buildChildren() {
+  List<Widget> _buildChildren(ProductsBloc bloc) {
     List<Widget> children = [
       Expanded(
         flex: 10,
         child: Text(
           widget.product.name,
-          style: TextStyle(fontSize: 15.0),
+          style: TextStyle(fontSize: 12.0),
           maxLines: 2,
         ),
       )
@@ -62,6 +64,8 @@ class IngredientState extends State<Ingredient> {
           onPressed: () {
             setState(() {
               widget.product.count++;
+              widget.onProductChange(widget.product);
+              //bloc.changeShoppingList(widget.product);
             });
           },
         ),
@@ -75,6 +79,8 @@ class IngredientState extends State<Ingredient> {
             onPressed: () {
               setState(() {
                 widget.product.count--;
+                widget.onProductChange(widget.product);
+                //bloc.changeShoppingList(widget.product);
               });
             },
           ),
@@ -87,7 +93,8 @@ class IngredientState extends State<Ingredient> {
 
   @override
   Widget build(BuildContext context) {
-    count = widget.product.count ?? 0;
+    final bloc = ProductsProvider.of(context);
+    count = widget.product.count;
 
     return ListTile(
       leading: Image.network(
@@ -95,7 +102,7 @@ class IngredientState extends State<Ingredient> {
         height: 40.0,
       ),
       title: Row(
-        children: _buildChildren(),
+        children: _buildChildren(bloc),
       ),
     );
   }

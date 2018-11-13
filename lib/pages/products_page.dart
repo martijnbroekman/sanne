@@ -6,7 +6,14 @@ import '../widgets/search_app_bar.dart';
 import '../blocs/products_provider.dart';
 import '../models/product.dart';
 
-class ProductsPage extends StatelessWidget {
+class ProductsPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _ProductPageState();
+  }
+}
+
+class _ProductPageState extends State<ProductsPage> {
   @override
   Widget build(BuildContext context) {
     final bloc = ProductsProvider.of(context);
@@ -39,7 +46,14 @@ class ProductsPage extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             final product = snapshot.data[index];
 
-            return Ingredient(product);
+            return Ingredient(
+              product: product,
+              onProductChange: (product) {
+                setState(() {
+                  bloc.changeShoppingList(product);
+                });
+              },
+            );
           },
         );
       },
