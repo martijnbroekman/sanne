@@ -4,8 +4,9 @@ class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final String searchText;
   final Function(String) onInput;
+  final Function(bool) onInputEnabled;
 
-  SearchAppBar({this.title, this.searchText, this.onInput});
+  SearchAppBar({this.title, this.searchText, this.onInput, this.onInputEnabled});
 
   @override
   _SearchAppBarState createState() => new _SearchAppBarState();
@@ -40,9 +41,11 @@ class _SearchAppBarState extends State<SearchAppBar> {
                       hintStyle: TextStyle(color: Colors.white)),
                   onChanged: widget.onInput,
                 );
+                widget.onInputEnabled(true);
               } else {
                 actionIcon = Icon(Icons.search);
                 appBarTitle = Text(widget.title);
+                widget.onInputEnabled(false);
               }
             });
           },

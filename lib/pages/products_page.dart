@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pagewise/flutter_pagewise.dart' show PagewiseListView;
 
 import '../widgets/ingredient.dart';
 import '../widgets/search_app_bar.dart';
+import '../widgets/product_list.dart';
 import '../blocs/products_provider.dart';
 import '../models/product.dart';
 
@@ -14,6 +16,8 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductsPage> {
+  bool searchEnabled = false;
+
   @override
   Widget build(BuildContext context) {
     final bloc = ProductsProvider.of(context);
@@ -25,8 +29,19 @@ class _ProductPageState extends State<ProductsPage> {
         onInput: (String value) {
           bloc.getProductByKeyWord(value);
         },
+        onInputEnabled: (bool enabled) {
+          if (enabled != searchEnabled) {
+            setState(() {
+              searchEnabled = enabled;
+            });
+          }
+        },
       ),
-      body: buildSearchList(bloc),
+      body: searchEnabled
+          ? buildSearchList(bloc)
+          : ProductList(
+              bloc: bloc,
+            ),
     );
   }
 

@@ -5,7 +5,7 @@ import '../models/product.dart';
 class ProductsRespository {
   final productsApi = ProductsApiProvider();
 
-  Future<List<Product>> getProducts({int page = 1}) {
+  Future<ProductPage> getProducts({int page = 1}) {
     return productsApi.getProducts(page: page);
   }
 

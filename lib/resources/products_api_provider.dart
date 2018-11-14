@@ -9,23 +9,26 @@ final _root = 'http://178.62.247.245:8000';
 class ProductsApiProvider {
   Client client = Client();
 
-  Future<List<Product>> getProducts({int page = 1}) async {
+  Future<ProductPage> getProducts({int page = 1}) async {
     final response = await client.get('$_root/products/?page=$page');
-    final parsedJson = json.decode(response.body);
-    final products = <Product>[];
-    parsedJson.map((p) => products.add(Product.fromJson(p)));
-    
-    return products;
+    if (response.statusCode == 200) {
+      final parsedJson = json.decode(response.body);
+      final productPage = ProductPage.fromJson(parsedJson);
+
+      return productPage;
+    }
+    return null;
   }
 
   Future<List<Product>> getProductsByKeyWord(String keyword) async {
     final response = await client.get('$_root/products/?search=$keyword');
-    final parsedJson = json.decode(response.body);
-    
-    final productPage = ProductPage.fromJson(parsedJson);
-    //parsedJson.forEach((p) => products.add(Product.fromJson(p)));
-    
-    return productPage.results;
+    if (response.statusCode == 200) {
+      final parsedJson = json.decode(response.body);
+      final productPage = ProductPage.fromJson(parsedJson);
+
+      return productPage.results;
+    }
+    return null;
   }
 
   Future<Product> getProduct(int id) async {
