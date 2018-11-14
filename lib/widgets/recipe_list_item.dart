@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/recipe.dart';
+import '../pages/recipe_details_page.dart';
 
 class RecipeListItem extends StatelessWidget {
   final Recipe recipe;
@@ -29,7 +30,12 @@ class RecipeListItem extends StatelessWidget {
             )
           ],
         ),
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => RecipeDetailsPage(recipe: recipe)));
+        },
       ),
     );
   }

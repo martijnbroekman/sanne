@@ -68,6 +68,7 @@ class _DashboardPageState extends State<DashboardPage> {
         ],
       ),
       floatingActionButton: new FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(Icons.shopping_cart),
         onPressed: () {
           Navigator.pushNamed(context, '/scanning');
