@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sanne/pages/landing_page.dart';
 import 'package:sanne/pages/discount_page.dart';
 import 'package:sanne/pages/shopping_list_page.dart';
-import 'package:sanne/pages/recipe_page.dart';
+import 'package:sanne/pages/recipes_page.dart';
 
 import 'package:sanne/widgets/fab_bottom_app_bar.dart';
 
@@ -52,7 +52,7 @@ class _DashboardPageState extends State<DashboardPage> {
           LandingPage(),
           DiscoundPage(),
           ShoppingListPage(),
-          RecipePage()
+          RecipesPage()
         ],
         onPageChanged: _onPageChanged,
         controller: _pageController,

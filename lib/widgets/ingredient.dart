@@ -14,13 +14,21 @@ class Ingredient extends StatelessWidget {
 
     List<Widget> children = [
       Expanded(
-        flex: 10,
-        child: Text(
-          product.name,
-          style: TextStyle(fontSize: 12.0),
-          maxLines: 2,
-        ),
-      )
+          flex: 10,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                product.name,
+                style: TextStyle(fontSize: 12.0),
+                maxLines: 2,
+              ),
+              Text(
+                '€ ${product.price.toStringAsFixed(2)}',
+                style: TextStyle(fontSize: 10),
+              ),
+            ],
+          ))
     ];
 
     if (count != null && count > 0) {

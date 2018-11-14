@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import './pages/dashboard_page.dart';
 import './pages/scanning_page.dart';
 import './blocs/products_provider.dart';
+import './blocs/recipe_provider.dart';
 
 void main() {
   //debugPaintSizeEnabled = true;
@@ -23,11 +24,13 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ProductsProvider(
-      child: MaterialApp(
-        routes: {
-          '/': (BuildContext context) => DashboardPage(),
-          '/scanning': (BuildContext context) => ScanningPage()
-        },
+      child: RecipeProvider(
+        child: MaterialApp(
+          routes: {
+            '/': (BuildContext context) => DashboardPage(),
+            '/scanning': (BuildContext context) => ScanningPage()
+          },
+        ),
       ),
     );
   }

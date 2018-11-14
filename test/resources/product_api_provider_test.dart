@@ -13,7 +13,7 @@ void main() {
 
     final products = await productsApi.getProducts(page: 1);
 
-    expect(products.length, 2);
+    expect(products.results.length, 2);
   });
 
   test('getProduct returns a Product by id', () async {
