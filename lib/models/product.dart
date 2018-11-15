@@ -3,6 +3,8 @@ class Product {
   String name;
   double price;
   String imageUrl;
+  int shelf;
+  int discount;
   int count;
 
   Product.fromJson(Map<String, dynamic> parsedJson)
@@ -10,7 +12,21 @@ class Product {
         name = parsedJson['name'],
         price = parsedJson['price'],
         imageUrl = parsedJson['image_url'],
-        count = 0;
+        shelf = parsedJson['shelf'],
+        discount = parsedJson['discount'],
+        count = parsedJson['count'] ?? 0;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'price': price,
+      'image_url': imageUrl,
+      'shelf': shelf,
+      'discount': discount,
+      'count': count
+    };
+  }
 }
 
 class ProductPage {
