@@ -1,5 +1,6 @@
 import 'package:rxdart/rxdart.dart';
 import '../models/recipe.dart';
+import '../models/product.dart';
 
 import '../resources/recipe_repository.dart';
 
@@ -8,11 +9,14 @@ class RecipeBloc {
 
   final _allRecipes = BehaviorSubject<List<Recipe>>();
   final _allRecipesInput = PublishSubject<List<Recipe>>();
+  final _products = BehaviorSubject<List<Future<Product>>>();
 
   int _maxRecipes;
 
   // Getters to Streams
   Observable<List<Recipe>> get recipes => _allRecipes.stream;
+  Observable<List<Future<Product>>> get products => _products.stream;
+  
   List<Recipe> get recipeCache => _allRecipes.stream.value;
 
   RecipeBloc() {
@@ -34,6 +38,7 @@ class RecipeBloc {
     );
   }
 
-  
-  
+  getProductsForRecipe(Recipe recipe) {
+    _products.sink.add(_recipeRepository.getProductsForRecipe(recipe));
+  }
 }

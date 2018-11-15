@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../models/recipe.dart';
+import '../models/product.dart';
+import '../blocs/recipe_provider.dart';
+import '../widgets/ingredient.dart';
 
 class RecipeDetailsPage extends StatelessWidget {
   final Recipe recipe;
@@ -9,6 +12,8 @@ class RecipeDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = RecipeProvider.of(context);
+
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -52,6 +57,10 @@ class RecipeDetailsPage extends StatelessWidget {
                 padding: EdgeInsets.only(bottom: 10.0),
               ),
               _buildPreparationMethod(),
+              _RecipeDetailsProductList(
+                recipe: recipe,
+                bloc: bloc,
+              ),
               _buildNutritionalValues(),
             ],
           ),
@@ -102,21 +111,82 @@ class RecipeDetailsPage extends StatelessWidget {
 }
 
 class _RecipeDetailsProductList extends StatefulWidget {
-
   final Recipe recipe;
+  final RecipeBloc bloc;
 
-  _RecipeDetailsProductList(this.recipe);
+  _RecipeDetailsProductList({this.recipe, this.bloc});
 
   @override
   State<StatefulWidget> createState() {
-    return _RecipeDetailsProductListState();
+    return _RecipeDetailsProductListState(recipe: recipe, bloc: bloc);
   }
 }
 
 class _RecipeDetailsProductListState extends State<_RecipeDetailsProductList> {
+  final Recipe recipe;
+  final RecipeBloc bloc;
+
+  _RecipeDetailsProductListState({this.recipe, this.bloc});
+
+  @override
+  void initState() {
+    bloc.getProductsForRecipe(recipe);
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // I don't tink i'll need a listview because of the listview in the paren
-    return Column();
+    return _buildProducts();
+  }
+
+  Widget _buildProducts() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'ingrediënten',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          StreamBuilder(
+            stream: bloc.products,
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<List<Future<Product>>> snapshot,
+            ) {
+              if (!snapshot.hasData) {
+                return CircularProgressIndicator();
+              }
+
+              return Column(
+                children: List.generate(
+                  snapshot.data.length,
+                  (int index) {
+                    return FutureBuilder(
+                      future: snapshot.data[index],
+                      builder: (BuildContext context,
+                          AsyncSnapshot<Product> productSnapshot) {
+                        if (!productSnapshot.hasData) {
+                          return Text('Product laden...');
+                        }
+
+                        return Ingredient(
+                          product: productSnapshot.data,
+                          onProductChange: (value) {},
+                        );
+                      },
+                    );
+                  },
+                ),
+              );
+            },
+          )
+        ],
+      ),
+    );
   }
 }
