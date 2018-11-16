@@ -3,19 +3,21 @@ import '../models/recipe.dart';
 import '../models/product.dart';
 
 import '../resources/recipe_repository.dart';
+import '../resources/shopping_list_repository.dart';
 
 class RecipeBloc {
   final _recipeRepository = RecipeRepository();
+  final _shoppingListRepository = ShoppingListRepository();
 
   final _allRecipes = BehaviorSubject<List<Recipe>>();
   final _allRecipesInput = PublishSubject<List<Recipe>>();
-  final _products = BehaviorSubject<List<Future<Product>>>();
+  final _products = BehaviorSubject<List<Product>>();
 
   int _maxRecipes;
 
   // Getters to Streams
   Observable<List<Recipe>> get recipes => _allRecipes.stream;
-  Observable<List<Future<Product>>> get products => _products.stream;
+  Observable<List<Product>> get products => _products.stream;
   
   List<Recipe> get recipeCache => _allRecipes.stream.value;
 
@@ -38,7 +40,22 @@ class RecipeBloc {
     );
   }
 
-  getProductsForRecipe(Recipe recipe) {
-    _products.sink.add(_recipeRepository.getProductsForRecipe(recipe));
+  Future<void> changeShoppingList(Product product) {
+    return _shoppingListRepository.changeShoppingList(product);
+  }
+
+  getProductsForRecipe(Recipe recipe) async {
+    final products = <Product>[];
+    for(var futureProduct in _recipeRepository.getProductsForRecipe(recipe)) {
+      products.add(await futureProduct);
+    }
+
+    _products.sink.add(await _shoppingListRepository.mergeProductsWithShoppingList(products));
+  }
+
+  dispose() {
+    _allRecipes.close();
+    _allRecipesInput.close();
+    _products.close();
   }
 }

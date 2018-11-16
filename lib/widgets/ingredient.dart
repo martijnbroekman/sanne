@@ -58,17 +58,6 @@ class Ingredient extends StatelessWidget {
       ),
     );
     if (count != null) {
-      children.add(
-        IconButton(
-          icon: Icon(Icons.add_circle_outline),
-          color: Colors.green,
-          onPressed: () {
-            product.count++;
-            onProductChange(product);
-          },
-        ),
-      );
-
       if (count > 0) {
         children.add(
           IconButton(
@@ -81,6 +70,17 @@ class Ingredient extends StatelessWidget {
           ),
         );
       }
+
+      children.add(
+        IconButton(
+          icon: Icon(Icons.add_circle_outline),
+          color: Colors.green,
+          onPressed: () {
+            product.count++;
+            onProductChange(product);
+          },
+        ),
+      );
     }
 
     return children;

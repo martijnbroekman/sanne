@@ -156,7 +156,7 @@ class _RecipeDetailsProductListState extends State<_RecipeDetailsProductList> {
             stream: bloc.products,
             builder: (
               BuildContext context,
-              AsyncSnapshot<List<Future<Product>>> snapshot,
+              AsyncSnapshot<List<Product>> snapshot,
             ) {
               if (!snapshot.hasData) {
                 return CircularProgressIndicator();
@@ -166,18 +166,12 @@ class _RecipeDetailsProductListState extends State<_RecipeDetailsProductList> {
                 children: List.generate(
                   snapshot.data.length,
                   (int index) {
-                    return FutureBuilder(
-                      future: snapshot.data[index],
-                      builder: (BuildContext context,
-                          AsyncSnapshot<Product> productSnapshot) {
-                        if (!productSnapshot.hasData) {
-                          return Text('Product laden...');
-                        }
-
-                        return Ingredient(
-                          product: productSnapshot.data,
-                          onProductChange: (value) {},
-                        );
+                    return Ingredient(
+                      product: snapshot.data[index],
+                      onProductChange: (value) {
+                        setState(() {
+                          bloc.changeShoppingList(snapshot.data[index]);
+                        });
                       },
                     );
                   },
