@@ -9,6 +9,10 @@ class ProductsRespository {
     return productsApi.getProducts(page: page);
   }
 
+  Future<List<Product>> getDiscountProducts() {
+    return productsApi.getDiscountProducts();
+  }
+
   Future<List<Product>> getProductsByKeyWord(String keyword) {
     return productsApi.getProductsByKeyWord(keyword);
   }

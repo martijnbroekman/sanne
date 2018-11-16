@@ -20,6 +20,17 @@ class ProductsApiProvider {
     return null;
   }
 
+  Future<List<Product>> getDiscountProducts() async {
+    final response = await client.get('$_root/products/discount');
+    if (response.statusCode == 200) {
+      final parsedJson = json.decode(response.body);
+      final products = parsedJson.map<Product>((p) => Product.fromJson(p)).toList();
+
+      return products;
+    }
+    return null;
+  }
+
   Future<List<Product>> getProductsByKeyWord(String keyword) async {
     final response = await client.get('$_root/products/?search=$keyword');
     if (response.statusCode == 200) {

@@ -19,7 +19,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
   Widget build(BuildContext context) {
     final bloc = ProductsProvider.of(context);
 
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text('Mijn lijst'),
         actions: <Widget>[

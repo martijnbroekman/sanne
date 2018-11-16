@@ -50,7 +50,7 @@ class _DashboardPageState extends State<DashboardPage> {
       body: PageView(
         children: <Widget>[
           LandingPage(),
-          DiscoundPage(),
+          DiscountPage(),
           ShoppingListPage(),
           RecipesPage()
         ],

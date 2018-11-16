@@ -23,9 +23,30 @@ class Ingredient extends StatelessWidget {
                 style: TextStyle(fontSize: 12.0),
                 maxLines: 2,
               ),
-              Text(
-                '€ ${product.price.toStringAsFixed(2)}',
-                style: TextStyle(fontSize: 10),
+              Row(
+                children: product.discount == 0
+                    ? <Widget>[
+                        Text(
+                          '€ ${product.price.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            fontSize: 10,
+                          ),
+                        ),
+                      ]
+                    : <Widget>[
+                        Text(
+                          '€ ${product.discountPrice.toStringAsFixed(2)} ',
+                          style: TextStyle(
+                            fontSize: 10,
+                          ),
+                        ),
+                        Text(
+                          '€ ${product.price.toStringAsFixed(2)}',
+                          style: TextStyle(
+                              fontSize: 10,
+                              decoration: TextDecoration.lineThrough),
+                        )
+                      ],
               ),
             ],
           ))

@@ -10,13 +10,16 @@ class ProductsBloc {
   final _shoppingListRepository = ShoppingListRepository();
   final _searchProducts = PublishSubject<List<Product>>();
   final _allProducts = PublishSubject<List<Product>>();
+  final _discountProducts = PublishSubject<List<Product>>();
 
   List<Product> _allProductsChache = <Product>[];
+
   int _maxProducts = 0;
 
   // Getters to Streams
   Observable<List<Product>> get foundProducts => _searchProducts.stream;
   Observable<List<Product>> get allProducts => _allProducts.stream;
+  Observable<List<Product>> get discountProducts => _discountProducts.stream;
 
   Future<void> changeShoppingList(Product product) {
     return _shoppingListRepository.changeShoppingList(product);
@@ -31,6 +34,10 @@ class ProductsBloc {
     products = await _shoppingListRepository.mergeProductsWithShoppingList(products);
 
     _searchProducts.sink.add(products);
+  }
+
+  getDiscounts() async {
+    _discountProducts.sink.add(await _shoppingListRepository.mergeProductsWithShoppingList(await _productsRepository.getDiscountProducts()));
   }
 
   getProducts() async {
@@ -75,5 +82,6 @@ class ProductsBloc {
   dispose() {
     _searchProducts.close();
     _allProducts.close();
+    _discountProducts.close();
   }
 }
