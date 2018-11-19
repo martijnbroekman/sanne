@@ -7,6 +7,7 @@
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -14,7 +15,7 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name=".App"
         android:label="sanne"
         android:icon="@mipmap/ic_launcher">
         <activity

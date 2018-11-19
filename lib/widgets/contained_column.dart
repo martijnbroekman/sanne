@@ -14,8 +14,27 @@ class ContainedColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        // DecoratedBox(
+        //   decoration: BoxDecoration(
+        //     color: Colors.grey,
+        //     boxShadow: <BoxShadow>[
+        //       BoxShadow(
+        //         color: Colors.black,
+        //         offset: Offset(1.0, 1.0),
+        //         blurRadius: 5.0,
+        //       ),
+        //     ],
+        //   ),
+        //   child: Center(
+        //     child: Text(
+        //       title,
+        //       style: TextStyle(color: Colors.white),
+        //     ),
+        //   ),
+        // ),
+
         DecoratedBox(
-          decoration: BoxDecoration(
+          decoration: new BoxDecoration(
             color: Colors.grey,
             boxShadow: <BoxShadow>[
               BoxShadow(
@@ -25,8 +44,8 @@ class ContainedColumn extends StatelessWidget {
               ),
             ],
           ),
-          child: Center(
-            child: Text(
+          child: ListTile(
+            title: Text(
               title,
               style: TextStyle(color: Colors.white),
             ),

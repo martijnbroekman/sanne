@@ -31,7 +31,8 @@ class ShoppingListDbProvider {
               image_url TEXT,
               shelf INTEGER,
               discount INTEGER,
-              count INTEGER
+              count INTEGER,
+              inCart INTEGER
             )
         """);
       },

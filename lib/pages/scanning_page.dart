@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:qr_mobile_vision/qr_camera.dart';
+import 'package:beacons/beacons.dart';
+import 'dart:async';
 
-import 'package:sanne/widgets/contained_column.dart';
+import '../blocs/products_provider.dart';
+import '../widgets/scanning_cart.dart';
+import '../models/product.dart';
 
 class ScanningPage extends StatefulWidget {
   @override
@@ -14,8 +18,52 @@ class _ScanningPageState extends State<ScanningPage> {
   String qr = '';
   int timesChecked = 0;
 
+  StreamSubscription<RangingResult> _subscription;
+  int _subscriptionStartedTimestamp;
+  int _shelf = 0;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _subscription.cancel();
+  }
+
+  @override
+  void initState() {
+    _subscriptionStartedTimestamp = DateTime.now().millisecondsSinceEpoch;
+    _subscription = Beacons.ranging(
+      region: BeaconRegion(
+        identifier: 'sanne beacon',
+        ids: ['905d6772-3d51-41c9-b95b-c79ee0545ad4'],
+      ),
+      inBackground: true,
+    ).listen(
+      (RangingResult result) {
+        int shelf = 0;
+        if (result.isNotEmpty) {
+          shelf = result.beacons.first.ids.first ==
+                  '905d6772-3d51-41c9-b95b-c79ee0545ad4'
+              ? 1
+              : 2;
+          print(shelf);
+        }
+        if (_shelf != shelf) {
+          setState(() {
+            _shelf = shelf;
+          });
+        }
+      },
+    )..onError((error) {
+        print(error);
+      });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final bloc = ProductsProvider.of(context);
+
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -55,28 +103,9 @@ class _ScanningPageState extends State<ScanningPage> {
           ),
           Expanded(
             flex: 2,
-            child: ListView(
-              padding: EdgeInsets.all(0.0),
-              children: <Widget>[
-                ContainedColumn(
-                  title: 'Mijn lijst',
-                  children: <Widget>[
-                    ListTile(title: Text('Pinda\'s'),),
-                    ListTile(title: Text('Appels'),),
-                    ListTile(title: Text('Brood'),),
-                    ListTile(title: Text('Koffie'),),
-                    ListTile(title: Text('Zeep'),),
-                    ListTile(title: Text('Zalm'),),
-                    ListTile(title: Text('Chips'),)
-                  ],
-                ),
-                ContainedColumn(
-                  title: 'Mijn winkelwagen',
-                  children: <Widget>[
-                    ListTile(title: Text('bananen'),)
-                  ],
-                )
-              ],
+            child: ScanningCart(
+              bloc: bloc,
+              shelf: _shelf,
             ),
           ),
         ],

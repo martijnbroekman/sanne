@@ -6,8 +6,9 @@ class Product {
   int shelf;
   int discount;
   int count;
+  bool inCart;
 
-  double get discountPrice => price * (1 - (count / 100));
+  double get discountPrice => price * (1 - (discount / 100));
 
   Product.fromJson(Map<String, dynamic> parsedJson)
       : id = parsedJson['id'],
@@ -16,7 +17,8 @@ class Product {
         imageUrl = parsedJson['image_url'],
         shelf = parsedJson['shelf'],
         discount = parsedJson['discount'] ?? 0,
-        count = parsedJson['count'] ?? 0;
+        count = parsedJson['count'] ?? 0,
+        inCart = parsedJson['inCart'] == 1;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -26,7 +28,8 @@ class Product {
       'image_url': imageUrl,
       'shelf': shelf,
       'discount': discount,
-      'count': count
+      'count': count,
+      'inCart': inCart ? 1 : 0
     };
   }
 }
