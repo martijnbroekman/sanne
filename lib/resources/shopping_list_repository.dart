@@ -42,4 +42,14 @@ class ShoppingListRepository {
       return p;
     }).toList();
   }
+
+  Future<Product> mergeProductWithShoppingList(Product product) async {
+    final shoppingListProducts = await provider.getProductsPair();
+
+    if (shoppingListProducts.containsKey(product.id)) {
+      return shoppingListProducts[product.id];
+    }
+
+    return product;
+  }
 }

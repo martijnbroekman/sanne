@@ -77,6 +77,12 @@ class _ScanningPageState extends State<ScanningPage> {
             flex: 1,
             child: ScanningCamera(
               bloc: bloc,
+              onAddProduct: (Product product) {
+                product.inCart = true;
+                product.count++;
+                bloc.changeShoppingList(product);
+                setState(() {});
+              },
             ),
           ),
           Expanded(

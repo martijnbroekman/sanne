@@ -71,8 +71,8 @@ class ProductsBloc {
     }
   }
 
-  Future<Product> getProduct(int id) {
-    return _productsRepository.getProduct(id);
+  Future<Product> getProduct(int id) async {
+    return _shoppingListRepository.mergeProductWithShoppingList(await _productsRepository.getProduct(id));
   }
 
   Future<void> _mergeChacheWithShoppingList() async {

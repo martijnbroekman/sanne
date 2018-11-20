@@ -33,64 +33,55 @@ class _ScanningCartState extends State<ScanningCart> {
         }
 
         nearby = <Product>[];
-        var inList = <Product>[];
-        var inCart = <Product>[];
-
         for (var product in snapshot.data) {
           if (product.shelf == widget.shelf) {
             nearby.add(product);
-          }
-          if (product.inCart) {
-            inCart.add(product);
-          } else {
-            inList.add(product);
           }
         }
 
         return ListView(
           padding: EdgeInsets.all(0.0),
-          children: _buildChildren(inList, inCart),
+          children: _buildChildren(context, snapshot.data),
         );
       },
     );
   }
 
-  List<Widget> _buildChildren(List<Product> inList, List<Product> inCart) {
+  List<Widget> _buildChildren(BuildContext context, List<Product> products) {
     var widgets = <Widget>[];
 
     if (nearby.length > 0) {
       widgets.add(ContainedColumn(
+        color: Theme.of(context).primaryColor,
         title: 'In schap',
         children: nearby
-            .map((p) => ListTile(
-                  title: Text(p.name),
-                ))
+            .map(_buildTile)
             .toList(),
       ));
     }
 
-    if (inList.length > 0) {
-      widgets.add(ContainedColumn(
-        title: 'Mijn lijst',
-        children: inList
-            .map((p) => ListTile(
-                  title: Text(p.name),
-                ))
-            .toList(),
-      ));
-    }
-
-    if (inCart.length > 0) {
-      widgets.add(ContainedColumn(
-        title: 'Mijn winkelwagen',
-        children: inCart
-            .map((p) => ListTile(
-                  title: Text(p.name),
-                ))
-            .toList(),
-      ));
-    }
+    widgets.add(ContainedColumn(
+      color: Theme.of(context).primaryColor,
+      title: 'Mijn lijst',
+      children: products.map(_buildTile).toList(),
+    ));
 
     return widgets;
+  }
+
+  Widget _buildTile(Product product) {
+    return ListTile(
+      leading: Image.network(
+        product.imageUrl,
+        height: 40.0,
+      ),
+      title: Text(
+        product.name,
+        style: TextStyle(
+            decoration: product.inCart
+                ? TextDecoration.lineThrough
+                : TextDecoration.none),
+      ),
+    );
   }
 }

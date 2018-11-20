@@ -6,8 +6,9 @@ import '../models/product.dart';
 
 class ScanningCamera extends StatefulWidget {
   final ProductsBloc bloc;
+  final Function(Product) onAddProduct;
 
-  ScanningCamera({@required this.bloc});
+  ScanningCamera({@required this.bloc, @required this.onAddProduct});
 
   @override
   State<StatefulWidget> createState() {
@@ -49,57 +50,55 @@ class _ScanningCameraState extends State<ScanningCamera> {
         });
 
         bloc.getProduct(int.parse(code)).then((Product product) {
-          showBottomSheet(
+          showDialog(
             context: context,
-            builder: (BuildContext context) {
+            builder: (context) {
               return _buildModal(context, product);
             },
-          ).closed.then((v) {
+          ).then((value) {
             setState(() {
               timesChecked = 0;
             });
           });
-          // showModalBottomSheet(
-          //   context: context,
-          //   builder: (BuildContext context) {
-          //     return _buildModal(product);
-          //   },
-          // ).then(
-          //   (dynamic value) {
-          //     setState(() {
-          //       timesChecked = 0;
-          //     });
-          //   },
-          // );
         });
       },
     );
   }
 
   Widget _buildModal(BuildContext context, Product product) {
-    return Container(
-      height: 200,
-      child: Column(
+    return AlertDialog(
+      title: Text('Wilt u het volgende product toevoegen aan uw winkelwagen'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Image.network(product.imageUrl),
           Text(product.name),
-          ButtonBar(
-            children: <Widget>[
-              FlatButton(
-                child: Text("Aan wikelwagen"),
-                onPressed: () {
-                  setState(() {
-                    timesChecked = 0;
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-              FlatButton(
-                child: Text("Aan Boodschappenlijst"),
-                onPressed: () {},
-              ),
-            ],
-          )
+          SizedBox(height: 10.0,),
+          Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            FloatingActionButton(
+              child: Text('Ja!'),
+              onPressed: () {
+                setState(() {
+                  timesChecked = 0;
+                });
+                Navigator.pop(context);
+                widget.onAddProduct(product);
+              },
+            ),
+            FlatButton(
+              child: Text('Nee'),
+              onPressed: () {
+                setState(() {
+                  timesChecked = 0;
+                });
+                Navigator.pop(context);
+              },
+            )
+          ],
+        ),
         ],
       ),
     );

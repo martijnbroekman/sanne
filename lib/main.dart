@@ -26,7 +26,8 @@ class _MyAppState extends State<MyApp> {
     return ProductsProvider(
       child: RecipeProvider(
         child: MaterialApp(
-          theme: ThemeData(primaryColor: Color.fromRGBO(34, 178, 115, 1)),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(primaryColor: Color.fromRGBO(34, 178, 115, 1), accentColor: Color.fromRGBO(34, 178, 115, 1)),
           routes: {
             '/': (BuildContext context) => DashboardPage(),
             '/scanning': (BuildContext context) => ScanningPage()
