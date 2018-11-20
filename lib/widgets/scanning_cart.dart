@@ -6,7 +6,7 @@ import 'contained_column.dart';
 
 class ScanningCart extends StatefulWidget {
   final ProductsBloc bloc;
-  final int shelf;
+  final String shelf;
 
   ScanningCart({@required this.bloc, this.shelf});
 

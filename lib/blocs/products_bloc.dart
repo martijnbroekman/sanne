@@ -71,6 +71,10 @@ class ProductsBloc {
     }
   }
 
+  Future<Product> getProduct(int id) {
+    return _productsRepository.getProduct(id);
+  }
+
   Future<void> _mergeChacheWithShoppingList() async {
     for(var product in _allProductsChache) {
       product.count = 0;

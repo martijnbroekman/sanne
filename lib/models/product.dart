@@ -3,7 +3,7 @@ class Product {
   String name;
   double price;
   String imageUrl;
-  int shelf;
+  String shelf;
   int discount;
   int count;
   bool inCart;

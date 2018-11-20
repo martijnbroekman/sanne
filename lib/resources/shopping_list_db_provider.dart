@@ -29,7 +29,7 @@ class ShoppingListDbProvider {
               name TEXT,
               price REAL,
               image_url TEXT,
-              shelf INTEGER,
+              shelf TEXT,
               discount INTEGER,
               count INTEGER,
               inCart INTEGER
